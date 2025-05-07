@@ -159,11 +159,16 @@
     let coins = 0;
     let tokens = 0;
 
+    // Editable settings
+    let coinsPerTap = 10;       // প্রতি ট্যাপে কয়েন
+    let coinsPerToken = 1000;   // কয়েন থেকে ১ টোকেনের মান
+    let referralBonus = 500;    // প্রতি রেফারে কয়েন
+
     function tapCircle() {
-      coins += 10;
-      if (coins >= 1000) {
+      coins += coinsPerTap;
+      if (coins >= coinsPerToken) {
         tokens++;
-        coins = 0;
+        coins -= coinsPerToken;
       }
       document.getElementById('coins').textContent = `Coins: ${coins}`;
       document.getElementById('tokens').textContent = `Tokens: ${tokens}`;
@@ -184,6 +189,10 @@
         <input type="text" value="${referralLink}" readonly style="width:90%; padding: 8px; margin-bottom: 10px; border-radius: 6px; border: 1px solid #ccc;">
         <button class="btn" onclick="copyReferralLink()">Copy Referral Link</button>
       `;
+
+      // Add referral bonus
+      coins += referralBonus;
+      document.getElementById('coins').textContent = `Coins: ${coins}`;
     }
 
     function copyReferralLink() {
