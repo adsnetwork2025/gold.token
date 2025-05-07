@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gold Token</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to bottom right, #ffe259, #ffa751);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #333;
+    }
+
+    h1 {
+      font-size: 3rem;
+      color: #5c3d00;
+      margin-bottom: 1rem;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+    }
+
+    .info-boxes {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 2rem;
+    }
+
+    .box {
+      background: #fff9e6;
+      padding: 20px 30px;
+      border-radius: 12px;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #5c3d00;
+    }
+
+    .circle {
+      width: 180px;
+      height: 180px;
+      background: radial-gradient(circle at 30% 30%, #ffd700, #d4af37);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: white;
+      cursor: pointer;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+      margin-bottom: 2rem;
+      transition: transform 0.2s;
+    }
+
+    .circle:hover {
+      transform: scale(1.05);
+    }
+
+    .buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      width: 100%;
+      max-width: 300px;
+      margin-bottom: 20px;
+    }
+
+    .btn {
+      padding: 12px 20px;
+      background: #5c3d00;
+      color: #fff;
+      font-weight: 600;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 1rem;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      transition: background 0.3s, transform 0.2s;
+    }
+
+    .btn:hover {
+      background: #6f4b10;
+      transform: translateY(-2px);
+    }
+
+    .wallet-box {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 15px;
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    .wallet-box input {
+      padding: 10px;
+      font-size: 1rem;
+      margin-bottom: 12px;
+      border-radius: 8px;
+      border: 1px solid #aaa;
+      width: 100%;
+    }
+
+    .connected {
+      font-weight: 600;
+      margin-top: 10px;
+      color: green;
+    }
+
+    .referral-container {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .referral-container p {
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>GOLD TOKEN</h1>
+
+  <div class="info-boxes">
+    <div class="box" id="tokens">Tokens: 0</div>
+    <div class="box" id="coins">Coins: 0</div>
+  </div>
+
+  <div class="circle" id="tapCircle">TAP</div>
+
+  <div class="buttons">
+    <button class="btn" onclick="joinTelegram()">Join Telegram Group</button>
+    <button class="btn" onclick="showReferral()">Refer & Earn</button>
+    <button class="btn" onclick="toggleWalletBox()">Connect Wallet</button>
+  </div>
+
+  <div class="wallet-box" id="walletBox">
+    <input type="text" id="walletInput" placeholder="Enter your TRON wallet address">
+    <button class="btn" onclick="saveWallet()">Connect Now</button>
+    <div class="connected" id="savedWallet"></div>
+  </div>
+
+  <div class="referral-container" id="referralContainer"></div>
+
+  <script>
+    let coins = 0;
+    let tokens = 0;
+
+    function tapCircle() {
+      coins += 10;
+      if (coins >= 1000) {
+        tokens++;
+        coins = 0;
+      }
+      document.getElementById('coins').textContent = `Coins: ${coins}`;
+      document.getElementById('tokens').textContent = `Tokens: ${tokens}`;
+    }
+
+    document.getElementById('tapCircle').addEventListener('click', tapCircle);
+
+    function joinTelegram() {
+      window.open("https://t.me/gold_token0", "_blank");
+    }
+
+    function showReferral() {
+      let username = "User123"; // Replace with dynamic Telegram username
+      let referralLink = `https://t.me/goldtoken01_bot?start=${username}`;
+      let container = document.getElementById("referralContainer");
+      container.innerHTML = `
+        <p>Your referral link:</p>
+        <input type="text" value="${referralLink}" readonly style="width:90%; padding: 8px; margin-bottom: 10px; border-radius: 6px; border: 1px solid #ccc;">
+        <button class="btn" onclick="copyReferralLink()">Copy Referral Link</button>
+      `;
+    }
+
+    function copyReferralLink() {
+      let username = "User123";
+      let referralLink = `https://t.me/goldtoken01_bot?start=${username}`;
+      navigator.clipboard.writeText(referralLink).then(() => {
+        alert("Referral link copied to clipboard!");
+      }).catch(() => {
+        alert("Failed to copy the referral link.");
+      });
+    }
+
+    function toggleWalletBox() {
+      const walletBox = document.getElementById("walletBox");
+      const walletInput = document.getElementById("walletInput");
+      const saved = localStorage.getItem("tronWallet");
+
+      if (saved) {
+        walletInput.value = saved;
+        document.getElementById("savedWallet").textContent = `Connected Wallet: ${saved}`;
+      } else {
+        walletInput.value = "";
+        document.getElementById("savedWallet").textContent = "";
+      }
+
+      walletBox.style.display = walletBox.style.display === "flex" ? "none" : "flex";
+    }
+
+    function saveWallet() {
+      const input = document.getElementById("walletInput").value.trim();
+      if (input) {
+        localStorage.setItem("tronWallet", input);
+        document.getElementById("savedWallet").textContent = `Connected Wallet: ${input}`;
+        alert("Wallet connected successfully!");
+      }
+    }
+  </script>
+</body>
+</html>
