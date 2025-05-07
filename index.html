@@ -156,22 +156,31 @@
   <div class="referral-container" id="referralContainer"></div>
 
   <script>
-    let coins = 0;
-    let tokens = 0;
+    let coins = parseInt(localStorage.getItem("userCoins")) || 0;
+    let tokens = parseInt(localStorage.getItem("userTokens")) || 0;
 
-    // Editable settings
-    let coinsPerTap = 10;       // প্রতি ট্যাপে কয়েন
-    let coinsPerToken = 1000;   // কয়েন থেকে ১ টোকেনের মান
-    let referralBonus = 500;    // প্রতি রেফারে কয়েন
+    let coinsPerTap = parseInt(localStorage.getItem("coinsPerTap")) || 1;
+    let coinsPerToken = parseInt(localStorage.getItem("coinsPerToken")) || 1000;
+    let referralBonus = parseInt(localStorage.getItem("referralBonus")) || 100;
+
+    function updateDisplay() {
+      document.getElementById('coins').textContent = `Coins: ${coins}`;
+      document.getElementById('tokens').textContent = `Tokens: ${tokens}`;
+    }
+
+    function saveProgress() {
+      localStorage.setItem("userCoins", coins);
+      localStorage.setItem("userTokens", tokens);
+    }
 
     function tapCircle() {
       coins += coinsPerTap;
-      if (coins >= coinsPerToken) {
+      while (coins >= coinsPerToken) {
         tokens++;
         coins -= coinsPerToken;
       }
-      document.getElementById('coins').textContent = `Coins: ${coins}`;
-      document.getElementById('tokens').textContent = `Tokens: ${tokens}`;
+      updateDisplay();
+      saveProgress();
     }
 
     document.getElementById('tapCircle').addEventListener('click', tapCircle);
@@ -190,9 +199,9 @@
         <button class="btn" onclick="copyReferralLink()">Copy Referral Link</button>
       `;
 
-      // Add referral bonus
       coins += referralBonus;
-      document.getElementById('coins').textContent = `Coins: ${coins}`;
+      updateDisplay();
+      saveProgress();
     }
 
     function copyReferralLink() {
@@ -229,6 +238,8 @@
         alert("Wallet connected successfully!");
       }
     }
+
+    updateDisplay();
   </script>
 </body>
 </html>
